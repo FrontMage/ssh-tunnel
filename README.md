@@ -9,6 +9,22 @@ docker build --no-cache -t [image-name]:latest .
 ```
 
 ## Usage
-```
-docker run -d -p [LocalPort]:[LocalPort] -e "LOCAL_PORT=[LocalPort]" -e "REMOTE_HOST=[RemoteHost]" -e "REMOTE_PORT=[RemotePort]" -e "SSH_USER=[SshUser]" -e "SSH_HOST=[SshHost]" -e "ID_FILE=/app/conn.pem" -v [IdFile]:/app/conn.pem:ro --name=tunnel [image-name]
+```yaml
+version: "3"
+
+services:
+  tunnel:
+    image: "ssh-tunnel:latest"
+    container_name: "ssh-tunnel"
+    volumes:
+      - "~/.ssh/id_rsa:/id_rsa"
+    environment:
+      - LOCAL_PORT=9000
+      - REMOTE_HOST=10.0.100.5
+      - REMOTE_PORT=9000
+      - SSH_USER=dfwang
+      - SSH_HOST=202.114.96.180
+      - ID_FILE=/id_rsa
+    ports:
+      - 9000:9000
 ```
